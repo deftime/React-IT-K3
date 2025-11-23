@@ -4,16 +4,32 @@
   padding: 0;
 }
 
-ul {
-  padding-left: 10px;
+.task {
+  padding: 10px;
+  border: 1px solid #000;
 }
 
-li {
-  display: flex;
-  align-items: flex-start;
-  gap: 5px;
-  font-size: 18px;
-  line-height: 20px;
-  margin-bottom: 10px;
+.task .line span:first-child {
+  font-weight: 700;
+}
+
+.task:nth-child(n+2) {
+  margin-top: 20px;
+}
+
+.task-1, .task-2, .task-3 {
+  border: none;
+}
+
+.task-1 {
+  background-color: #e5e5e5;
+}
+
+.task-2 {
+  background-color: #84d984;
+}
+
+.task-3 {
+  background-color: tomato;
 }
 

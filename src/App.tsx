@@ -1,32 +1,35 @@
 import './App.css'
+import { useState } from "react";
+
+//const tasks = null;
+//const tasks = [];
+const tasks = [
+    {
+        id: 1,
+        title: "Buy some eats",
+        isDone: true,
+        addedAt: "01.09.2025",
+        priority: 1
+    },
+    {
+        id: 2,
+        title: "Flow flowers",
+        isDone: true,
+        addedAt: "02.09.2025",
+        priority: 2
+    },
+    {
+        id: 3,
+        title: "Go out",
+        isDone: false,
+        addedAt: "03.09.2025",
+        priority: 3
+    },
+]
 
 function App() {
 
-    //const tasks = null;
-    //const tasks = [];
-    const tasks = [
-        {
-            id: 1,
-            title: "Buy some eats",
-            isDone: true,
-            addedAt: "01.09.2025",
-            priority: 1
-        },
-        {
-            id: 2,
-            title: "Flow flowers",
-            isDone: true,
-            addedAt: "02.09.2025",
-            priority: 2
-        },
-        {
-            id: 3,
-            title: "Go out",
-            isDone: false,
-            addedAt: "03.09.2025",
-            priority: 3
-        },
-    ]
+    const [selected, setSelect] = useState(null);
 
     return (
         <div className={'toDoList main'}>
@@ -34,8 +37,13 @@ function App() {
             <div className={'list-box'}>
                 {!tasks ? <span>Loading...</span> : undefined}
                 {tasks && tasks.length === 0 ? <span>No tasks</span> : tasks?.map((task) => {
+                    let select = task.id === selected;
                     return (
-                        <div className={'task task-' + task.priority} key={task.id}>
+                        <div className={`${select ? "border" : ''} task task-` + task.priority} key={task.id}
+                             onClick={()=>{
+                                setSelect(task.id)
+                             }}
+                        >
                             <div className={'title line'}>
                                 <span>Task: </span>
                                 <span style={{ textDecoration: task.isDone ? 'line-through' : 'none' }}>{task.title}</span>
@@ -52,6 +60,7 @@ function App() {
                     )
                 })}
             </div>
+            <div className="btn-reset" onClick={()=>{setSelect(null)}}>Reset</div>
         </div>
     )
 }

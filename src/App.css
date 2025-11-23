@@ -6,7 +6,11 @@
 
 .task {
   padding: 10px;
-  border: 1px solid #000;
+  border: 2px solid #fff;
+}
+
+.task.border {
+  border-color: #000;
 }
 
 .task .line span:first-child {
@@ -15,10 +19,6 @@
 
 .task:nth-child(n+2) {
   margin-top: 20px;
-}
-
-.task-1, .task-2, .task-3 {
-  border: none;
 }
 
 .task-1 {
@@ -31,5 +31,15 @@
 
 .task-3 {
   background-color: tomato;
+}
+
+.btn-reset {
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: red;
+  padding: 10px 20px;
+  width: fit-content;
+  cursor: pointer;
+  margin: 30px 0 0 2px;
 }
 

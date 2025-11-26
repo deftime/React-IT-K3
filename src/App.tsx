@@ -1,67 +1,70 @@
-import './App.css'
-import { useState } from "react";
-
-//const tasks = null;
-//const tasks = [];
-const tasks = [
-    {
-        id: 1,
-        title: "Buy some eats",
-        isDone: true,
-        addedAt: "01.09.2025",
-        priority: 1
-    },
-    {
-        id: 2,
-        title: "Flow flowers",
-        isDone: true,
-        addedAt: "02.09.2025",
-        priority: 2
-    },
-    {
-        id: 3,
-        title: "Go out",
-        isDone: false,
-        addedAt: "03.09.2025",
-        priority: 3
-    },
-]
+import clsx from 'clsx';
+import cls from './scss/App.module.scss';
+import loader from './img/loader.svg';
+import {useEffect, useState} from "react";
 
 function App() {
 
     const [selected, setSelect] = useState(null);
+    const [tasks, setTasks] = useState(null);
+
+    useEffect(()=>{
+        fetch('https://trelly.it-incubator.app/api/1.0/boards/tasks', {
+            headers: {
+                'api-key': '***' // Set key
+            }
+        })
+            .then(res => res.json())
+            .then(json => {
+                setTasks(json.data)
+            })
+    }, [])
+
+    function getStatus(status) {
+        switch (status) {
+            case 0:
+                return (<div className={clsx(cls.plate, cls.todo)}>To Do</div>)
+            case 1:
+                return (<div className={clsx(cls.plate, cls.progress)}>In progress</div>)
+            case 2:
+                return (<div className={clsx(cls.plate, cls.done)}>Done</div>)
+            case 3:
+                return (<div className={cls.plate}>Draft</div>)
+        }
+    }
 
     return (
-        <div className={'toDoList main'}>
-            <h1 className={'title h1'}>To Do List</h1>
-            <div className={'list-box'}>
-                {!tasks ? <span>Loading...</span> : undefined}
+        <section className={cls.toDoList}>
+            <h1 className={cls.mainTitle}>To Do List</h1>
+            <div className={cls.listBox}>
+                {!tasks ? <img src={loader} alt="" className={cls.loader}/> : undefined}
                 {tasks && tasks.length === 0 ? <span>No tasks</span> : tasks?.map((task) => {
                     let select = task.id === selected;
                     return (
-                        <div className={`${select ? "border" : ''} task task-` + task.priority} key={task.id}
+                        <div className={clsx(cls.task, select && cls.border, cls.task + task.priority)} key={task.id}
                              onClick={()=>{
                                 setSelect(task.id)
                              }}
                         >
-                            <div className={'title line'}>
-                                <span>Task: </span>
-                                <span style={{ textDecoration: task.isDone ? 'line-through' : 'none' }}>{task.title}</span>
+                            <div className={clsx(cls.name, cls.line)}>
+                                <span style={{ textDecoration: task.attributes.status >= 2 ? 'line-through' : 'none' }}>{task.attributes.title}</span>
                             </div>
-                            <div className={'status line'}>
+                            <div className={clsx(cls.status, cls.line)}>
                                 <span>Status: </span>
-                                <input type="checkbox" disabled checked={task.isDone}/>
+                                <div className={cls.statusBox}>
+                                    {getStatus(task.attributes.status)}
+                                </div>
                             </div>
-                            <div className={'date line'}>
+                            <div className={clsx(cls.data, cls.line)}>
                                 <span>Date: </span>
-                                <span>{task.addedAt}</span>
+                                <span>{new Date(task.attributes.addedAt).toLocaleDateString()}</span>
                             </div>
                         </div>
                     )
                 })}
             </div>
-            <div className="btn-reset" onClick={()=>{setSelect(null)}}>Reset</div>
-        </div>
+            <div className={cls.btnReset} onClick={()=>{setSelect(null)}}>Reset</div>
+        </section>
     )
 }
 

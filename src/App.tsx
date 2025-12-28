@@ -21,10 +21,8 @@ export function App() {
             })
     }, []);
 
-    function selectTrack(id) {
-        setSelectedId(id);
-
-        fetch('https://musicfun.it-incubator.app/api/1.0/playlists/tracks/' + id, {
+    useEffect(() => {
+        fetch('https://musicfun.it-incubator.app/api/1.0/playlists/tracks/' + selectedTrackId, {
             headers: {
                 'api-key': '***' // Set key
             }
@@ -33,10 +31,7 @@ export function App() {
             .then(json => {
                 setSelected(json.data)
             })
-
-        console.log(selectedTrack);
-
-    }
+    }, [selectedTrackId])
 
     return (
         <section className={cls.musicPlayer}>
@@ -52,7 +47,8 @@ export function App() {
                         return (
                             <div key={item.id} className={clsx(cls.track, item.id === selectedTrackId && cls.selected)}
                                  onClick={() => {
-                                     selectTrack(item.id)
+                                     setSelected(null);
+                                     setSelectedId(item.id);
                                  }}>
                                 <div className={cls.name}>{item.attributes.title}</div>
                                 <audio src={item.attributes.attachments[0].url} controls={true}/>

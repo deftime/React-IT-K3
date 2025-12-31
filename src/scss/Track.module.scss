@@ -1,0 +1,17 @@
+.track {
+  margin-bottom: 30px;
+  padding: 5px 0;
+  width: fit-content;
+  cursor: default;
+  .name {
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  audio {
+    display: block;
+    width: 100%;
+  }
+  &.selected {
+    background-color: yellow;
+  }
+}

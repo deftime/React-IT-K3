@@ -1,0 +1,44 @@
+.infoBox {
+  position: sticky;
+  top: 50px;
+  left: 0;
+  background-color: #bce6ff;
+  padding: 10px;
+  .name {
+    font-size: 30px;
+    line-height: 35px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .date, .duration, .size {
+    font-size: 15px;
+    line-height: 18px;
+    font-style: italic;
+    margin-bottom: 5px;
+  }
+  .size {
+    font-style: normal;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  .lyrics {
+    font-size: 12px;
+    line-height: 18px;
+    font-style: italic;
+  }
+}
+
+.noTrack {
+  font-size: 20px;
+  line-height: 25px;
+  font-style: italic;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.loader {
+  position: sticky;
+  top: 50px;
+  left: 0;
+  right: 0;
+}

@@ -6,11 +6,6 @@ hr {
   padding: 30px;
 }
 
-img.loader {
-  display: block;
-  margin: 0 auto;
-}
-
 .title {
   font-size: 40px;
   line-height: 50px;
@@ -42,59 +37,6 @@ img.loader {
   text-align: center;
   margin-bottom: 30px;
   background-color: #bce6ff;
-}
-
-// Track item
-.track {
-  margin-bottom: 30px;
-  padding: 5px 0;
-  width: fit-content;
-  cursor: default;
-  .name {
-    font-weight: 700;
-    margin-bottom: 5px;
-  }
-  audio {
-    display: block;
-    width: 100%;
-  }
-  &.selected {
-    background-color: yellow;
-  }
-}
-
-// Track detail box
-.infoBox {
-  position: sticky;
-  top: 50px;
-  left: 0;
-  background-color: #bce6ff;
-  padding: 10px;
-  .name {
-    font-size: 30px;
-    line-height: 35px;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-  .date, .duration, .size {
-    font-size: 15px;
-    line-height: 18px;
-    font-style: italic;
-    margin-bottom: 5px;
-  }
-  .size {
-    font-style: normal;
-    font-weight: 700;
-    margin-top: 10px;
-  }
-}
-
-.noTrack {
-  font-size: 20px;
-  line-height: 25px;
-  font-style: italic;
-  margin-top: 20px;
-  text-align: center;
 }
 
 .btnReset {

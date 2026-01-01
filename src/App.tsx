@@ -1,10 +1,10 @@
-import clsx from 'clsx';
 import cls from './scss/App.module.scss';
 import loader from './img/loader.svg';
 import {useEffect, useState} from "react";
+import Task from "./components/Task";
+import TaskDetails from "./components/TaskDetails";
 
 function App() {
-
     const [selectedId, setSelectId] = useState(null);
     const [selectedTask, setSelectTask] = useState(null);
     const [tasks, setTasks] = useState(null);
@@ -12,7 +12,7 @@ function App() {
     useEffect(()=>{
         fetch('https://trelly.it-incubator.app/api/1.0/boards/tasks', {
             headers: {
-                'api-key': 'c54c1881-2ff2-421a-bc1e-98d829a16de3' // Set key
+                'api-key': '7125e182-3d06-4aff-82e8-ebec790f10eb' // Set key
             }
         })
             .then(res => res.json())
@@ -21,33 +21,19 @@ function App() {
             })
     }, [])
 
-    function getStatus(status) {
-        switch (status) {
-            case 0:
-                return (<div className={clsx(cls.statusPlate, cls.todo)}>To Do</div>)
-            case 1:
-                return (<div className={clsx(cls.statusPlate, cls.progress)}>In progress</div>)
-            case 2:
-                return (<div className={clsx(cls.statusPlate, cls.done)}>Done</div>)
-            case 3:
-                return (<div className={cls.statusPlate}>Draft</div>)
-        }
-    }
-
     function selectTask(taskId, boardId) {
+        setSelectTask(null);
         setSelectId(taskId);
 
         fetch(`https://trelly.it-incubator.app/api/1.0/boards/${boardId}/tasks/${taskId}`, {
             headers: {
-                'api-key': 'c54c1881-2ff2-421a-bc1e-98d829a16de3' // Set key
+                'api-key': '7125e182-3d06-4aff-82e8-ebec790f10eb' // Set key
             }
         })
             .then(res => res.json())
             .then(json => {
                 setSelectTask(json.data)
             })
-
-        console.log(selectedTask);
     }
 
     return (
@@ -55,44 +41,27 @@ function App() {
             <h1 className={cls.mainTitle}>To Do List</h1>
             <div className={cls.inner}>
                 <div className={cls.listBox}>
-                    {!tasks && <img src={loader} alt="" className={cls.loader}/>}
+                    {!tasks && <img src={loader} alt="" className={'loader'}/>}
                     {tasks && tasks.length === 0 ? <span>No tasks</span> : tasks?.map((task) => {
-                        return (
-                            <div className={clsx(cls.task, task.id === selectedId && cls.border, cls.task + task.priority)} key={task.id}
-                                 onClick={()=>{
-                                    setSelectTask(null)
-                                    selectTask(task.id, task.attributes.boardId)
-                                 }}
-                            >
-                                <div className={clsx(cls.name, cls.line)}>
-                                    <span style={{ textDecoration: task.attributes.status >= 2 ? 'line-through' : 'none' }}>{task.attributes.title}</span>
-                                </div>
-                                <div className={clsx(cls.status, cls.line)}>
-                                    <span>Status: </span>
-                                    {getStatus(task.attributes.status)}
-                                </div>
-                                <div className={clsx(cls.data, cls.line)}>
-                                    <span>Date: </span>
-                                    <span>{new Date(task.attributes.addedAt).toLocaleDateString()}</span>
-                                </div>
-                            </div>
-                        )
+                        return <Task key={task.id}
+                                     id={task.id}
+                                     boardId={task.attributes.boardId}
+                                     priority={task.priority}
+                                     status={task.attributes.status}
+                                     title={task.attributes.title}
+                                     date={task.attributes.addedAt}
+                                     isSelect={task.id === selectedId}
+                                     onSelect={selectTask}
+                                />
                     })}
                 </div>
-                <div className={cls.taskInfo}>
-                    {!selectedId && <div className={cls.noTask}>Select a task!</div>}
-                    {selectedId && !selectedTask && <img src={loader} alt="" className={cls.loader}/>}
-                    {selectedTask && <>
-                        <div className={cls.top}>
-                            <div className={cls.name}>{selectedTask.attributes.title}</div>
-                            <div className={cls.datas}>
-                                {getStatus(selectedTask.attributes.status)}
-                                <div className={cls.date}>{new Date(selectedTask.attributes.addedAt).toLocaleDateString()}</div>
-                            </div>
-                        </div>
-                        <div className={cls.desc}>{selectedTask.attributes.description ?? 'No description.'}</div>
-                    </>}
-                </div>
+                <TaskDetails title={selectedTask?.attributes.title}
+                             status={selectedTask?.attributes.status}
+                             date={selectedTask?.attributes.addedAt}
+                             description={selectedTask?.attributes.description}
+                             isLoading={selectedId && !selectedTask}
+                             noData={!selectedId}
+                />
             </div>
             <div className={cls.btnReset} onClick={()=>{
                 setSelectId(null)

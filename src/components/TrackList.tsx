@@ -1,9 +1,27 @@
 import loader from "../img/loader.svg";
 import {useEffect, useState} from "react";
 import {Track} from "./Track";
+import type {SetSelectedIdType} from "../App";
 
-export function TrackList(props) {
-    const [tracks, setTracks] = useState(null);
+type TrackAttachmentsType = {
+    url: string
+}
+
+type TracksType = {
+    id: string
+    attributes: {
+        title: string
+        attachments: TrackAttachmentsType[]
+    }
+}
+
+type PropsType = {
+    selectedTrackId: string | null
+    setSelectedId: SetSelectedIdType
+}
+
+export function TrackList(props: PropsType) {
+    const [tracks, setTracks] = useState<TracksType[] | null>(null);
 
     useEffect(() => {
         fetch('https://musicfun.it-incubator.app/api/1.0/playlists/tracks', {
@@ -17,7 +35,7 @@ export function TrackList(props) {
             })
     }, []);
 
-    function setSelect(id) {
+    function setSelect(id: string) {
         props.setSelectedId(id)
     }
 

@@ -4,8 +4,10 @@ import {useState} from "react";
 import {TrackList} from "./components/TrackList";
 import {TrackDetails} from "./components/TrackDetails";
 
+export type SetSelectedIdType = (id: string) => void
+
 export function App() {
-    const [selectedTrackId, setSelectedId] = useState(null);
+    const [selectedTrackId, setSelectedId] = useState<string | null>(null);
 
     return (
         <section className={cls.musicPlayer}>

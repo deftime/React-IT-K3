@@ -3,8 +3,26 @@ import cls from "../scss/TrackDetails.module.scss";
 import loader from "../img/loader.svg";
 import {useEffect, useState} from "react";
 
-export function TrackDetails(props) {
-    const [selectedTrack, setSelected] = useState(null);
+type TrackAttachmentsType = {
+    fileSize: number
+}
+
+type TrackType = {
+    attributes: {
+        title: string
+        releaseDate: string
+        duration: number
+        lyrics: string | null
+        attachments: TrackAttachmentsType[]
+    }
+}
+
+type PropsType = {
+    id: string | null
+}
+
+export function TrackDetails(props: PropsType) {
+    const [selectedTrack, setSelected] = useState<TrackType | null>(null);
 
     useEffect(() => {
         setSelected(null);

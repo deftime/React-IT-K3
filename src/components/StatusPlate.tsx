@@ -1,14 +1,14 @@
 import clsx from 'clsx';
 import cls from "../scss/StatusPlate.module.scss";
 
-function StatusPlate(props) {
+type PropsType = {
+    status: number | undefined
+    styleVar: string | null
+}
 
-    const status = {
-        0: 'To Do',
-        1: 'In progress',
-        2: 'Done',
-        3: 'Draft'
-    }
+function StatusPlate(props: PropsType) {
+
+    const status: string[] = ['To Do', 'In progress', 'Done', 'Draft']
 
     return (
         <div className={clsx(
@@ -17,7 +17,7 @@ function StatusPlate(props) {
                         props.styleVar === 'inDetails' && cls.inDetails
                         )}
         >
-            {status[props.status] ?? 'No status'}
+            {props.status ? status[props.status] : 'No status'}
         </div>
     )
 }

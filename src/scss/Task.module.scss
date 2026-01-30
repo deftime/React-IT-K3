@@ -25,19 +25,17 @@
       width: fit-content;
     }
   }
-  &.border {
-    border-color: green;
-    background-color: #91c885;
-  }
   &.task1 {
     background-color: #e5e5e5;
   }
-
   &.task2 {
     background-color: #84d984;
   }
-
   &.task3 {
     background-color: tomato;
+  }
+  &.border {
+    border-color: green;
+    background-color: #91c885;
   }
 }

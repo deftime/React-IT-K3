@@ -4,10 +4,22 @@ import {useEffect, useState} from "react";
 import Task from "./components/Task";
 import TaskDetails from "./components/TaskDetails";
 
+type TaskType = {
+    id: string
+    attributes: {
+        title: string
+        status: number
+        addedAt: string
+        description: string
+        boardId: string
+        priority: number
+    }
+}
+
 function App() {
-    const [selectedId, setSelectId] = useState(null);
-    const [selectedTask, setSelectTask] = useState(null);
-    const [tasks, setTasks] = useState(null);
+    const [selectedId, setSelectId] = useState<string | null>(null);
+    const [selectedTask, setSelectTask] = useState<TaskType | null>(null);
+    const [tasks, setTasks] = useState<TaskType[] | null>(null);
 
     useEffect(()=>{
         fetch('https://trelly.it-incubator.app/api/1.0/boards/tasks', {
@@ -21,7 +33,7 @@ function App() {
             })
     }, [])
 
-    function selectTask(taskId, boardId) {
+    function selectTask(taskId: string, boardId: string): void {
         setSelectTask(null);
         setSelectId(taskId);
 
@@ -46,7 +58,7 @@ function App() {
                         return <Task key={task.id}
                                      id={task.id}
                                      boardId={task.attributes.boardId}
-                                     priority={task.priority}
+                                     priority={task.attributes.priority}
                                      status={task.attributes.status}
                                      title={task.attributes.title}
                                      date={task.attributes.addedAt}

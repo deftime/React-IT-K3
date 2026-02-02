@@ -1,19 +1,9 @@
 import loader from "../img/loader.svg";
 import {useEffect, useState} from "react";
 import {Track} from "./Track";
+import {getTracks} from "../api/api";
+import type {TrackType} from "../api/api";
 import type {SetSelectedIdType} from "../App";
-
-type TrackAttachmentsType = {
-    url: string
-}
-
-type TracksType = {
-    id: string
-    attributes: {
-        title: string
-        attachments: TrackAttachmentsType[]
-    }
-}
 
 type PropsType = {
     selectedTrackId: string | null
@@ -21,18 +11,12 @@ type PropsType = {
 }
 
 export function TrackList(props: PropsType) {
-    const [tracks, setTracks] = useState<TracksType[] | null>(null);
+    const [tracks, setTracks] = useState<TrackType[] | null>(null);
 
     useEffect(() => {
-        fetch('https://musicfun.it-incubator.app/api/1.0/playlists/tracks', {
-            headers: {
-                'api-key': 'bd6aa3a8-56fe-49ab-8c1e-1092c9534da1' // Set key
-            }
+        getTracks().then(json => {
+            setTracks(json.data)
         })
-            .then(resp => resp.json())
-            .then(json => {
-                setTracks(json.data)
-            })
     }, []);
 
     function setSelect(id: string) {

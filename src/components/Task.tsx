@@ -19,7 +19,6 @@ function Task(props: PropsType) {
     return (
         <div className={clsx(cls.task, props.isSelect && cls.border, cls['task' + props.priority])}
              onClick={()=>{
-                 //setSelectTask(null)
                  props.onSelect(props.id, props.boardId)
              }}
         >

@@ -1,20 +1,10 @@
 import cls from './scss/App.module.scss';
 import loader from './img/loader.svg';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Task from "./components/Task";
 import TaskDetails from "./components/TaskDetails";
-
-type TaskType = {
-    id: string
-    attributes: {
-        title: string
-        status: number
-        addedAt: string
-        description: string
-        boardId: string
-        priority: number
-    }
-}
+import { getTask, getTasks } from "./api/api";
+import type { TaskType } from "./api/api";
 
 function App() {
     const [selectedId, setSelectId] = useState<string | null>(null);
@@ -22,13 +12,7 @@ function App() {
     const [tasks, setTasks] = useState<TaskType[] | null>(null);
 
     useEffect(()=>{
-        fetch('https://trelly.it-incubator.app/api/1.0/boards/tasks', {
-            headers: {
-                'api-key': '7125e182-3d06-4aff-82e8-ebec790f10eb' // Set key
-            }
-        })
-            .then(res => res.json())
-            .then(json => {
+        getTasks().then(json => {
                 setTasks(json.data)
             })
     }, [])
@@ -36,14 +20,7 @@ function App() {
     function selectTask(taskId: string, boardId: string): void {
         setSelectTask(null);
         setSelectId(taskId);
-
-        fetch(`https://trelly.it-incubator.app/api/1.0/boards/${boardId}/tasks/${taskId}`, {
-            headers: {
-                'api-key': '7125e182-3d06-4aff-82e8-ebec790f10eb' // Set key
-            }
-        })
-            .then(res => res.json())
-            .then(json => {
+        getTask(boardId, taskId).then(json => {
                 setSelectTask(json.data)
             })
     }

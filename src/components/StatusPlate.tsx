@@ -17,7 +17,7 @@ function StatusPlate(props: PropsType) {
                         props.styleVar === 'inDetails' && cls.inDetails
                         )}
         >
-            {props.status ? status[props.status] : 'No status'}
+            {props.status !== undefined ? status[props.status] : 'No status'}
         </div>
     )
 }

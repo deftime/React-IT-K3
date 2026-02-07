@@ -1,28 +1,19 @@
 import cls from './scss/App.module.scss';
 import loader from './img/loader.svg';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Task from "./components/Task";
 import TaskDetails from "./components/TaskDetails";
-import { getTask, getTasks } from "./api/api";
-import type { TaskType } from "./api/api";
+import {useTaskList} from "./hooks/useTaskList";
+import {useTask} from "./hooks/useTask";
 
 function App() {
     const [selectedId, setSelectId] = useState<string | null>(null);
-    const [selectedTask, setSelectTask] = useState<TaskType | null>(null);
-    const [tasks, setTasks] = useState<TaskType[] | null>(null);
-
-    useEffect(()=>{
-        getTasks().then(json => {
-                setTasks(json.data)
-            })
-    }, [])
+    const task = useTask();
+    const { tasks } = useTaskList();
 
     function selectTask(taskId: string, boardId: string): void {
-        setSelectTask(null);
         setSelectId(taskId);
-        getTask(boardId, taskId).then(json => {
-                setSelectTask(json.data)
-            })
+        task.refresh(boardId, taskId);
     }
 
     return (
@@ -44,17 +35,17 @@ function App() {
                                 />
                     })}
                 </div>
-                <TaskDetails title={selectedTask?.attributes.title}
-                             status={selectedTask?.attributes.status}
-                             date={selectedTask?.attributes.addedAt}
-                             description={selectedTask?.attributes.description}
-                             isLoading={selectedId && !selectedTask}
+                <TaskDetails title={task.current?.attributes.title}
+                             status={task.current?.attributes.status}
+                             date={task.current?.attributes.addedAt}
+                             description={task.current?.attributes.description}
+                             isLoading={selectedId && !task.current}
                              noData={!selectedId}
                 />
             </div>
             <div className={cls.btnReset} onClick={()=>{
                 setSelectId(null)
-                setSelectTask(null)
+                task.reset();
             }}>Reset</div>
         </section>
     )

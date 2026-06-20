@@ -14,6 +14,7 @@ export function TrackList(props: PropsType) {
     return (
         <>
             {!trackList.tracks && <img src={loader} alt="" className={'loader'}/>}
+            {trackList.error && <span>Error: {trackList.error}</span>}
             {trackList.tracks && trackList.tracks.length === 0 ? <span>NO tracks!</span> : trackList.tracks?.map((item) => {
                 return (
                     <Track key={item.id}

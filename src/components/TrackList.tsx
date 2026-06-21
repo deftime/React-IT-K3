@@ -1,5 +1,6 @@
-import loader from "../img/loader.svg";
+import loader from "../assets/loader.svg";
 import {Track} from "./Track";
+import {ErrorMsg} from "./ErrorMsg.tsx";
 import {useTrackList} from "../hooks/useTrackList";
 import type {SetSelectedIdType} from "../App";
 
@@ -14,7 +15,7 @@ export function TrackList(props: PropsType) {
     return (
         <>
             {!trackList.tracks && <img src={loader} alt="" className={'loader'}/>}
-            {trackList.error && <span>Error: {trackList.error}</span>}
+            {trackList.error && <ErrorMsg msg={trackList.error} />}
             {trackList.tracks && trackList.tracks.length === 0 ? <span>NO tracks!</span> : trackList.tracks?.map((item) => {
                 return (
                     <Track key={item.id}
